@@ -1,4 +1,4 @@
-#Working with Makefiles 
+# Working with Makefiles 
 
 ##### An integer calculator is implemented and different functions are implemented in the subdirectories 1,2,3 and 4. The description of the sub-directories are as follows:
 
