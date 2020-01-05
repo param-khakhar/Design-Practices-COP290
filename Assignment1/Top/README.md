@@ -35,19 +35,30 @@
 
   8. **exe** : Contains the final executable link after linking all the object files.
 
-  9. **makefile** : The main makefile for the entire file system. Following targets are used.
-     ============================================================================================================
+  9. **makefile**: The main makefile for the entire file system. Following targets are used.
+        
      1.**build**: Contains the description of the various targets which need to be used and is the default target.
+     
      2.**link**: Links all object(.o) files present in the obj directory and returns an executable link.
+     
      3.**obj/basic.o obj/basic.h**: Recursive call to the make present in the directory 1.
+     
      4.**obj/Py.o obj/Py.h**: Recursive call to the make present in the directory 2.
+     
      5.**obj/adv.o obj/adv.h**: Recursive call to the make present in the directory 3.
+     
      6.**obj/Sqrt.o obj/Sqrt.h**: Recursive call to the make present in the directory 4.
+     
      7.**run**: Run the program by executing the link file.
-     8.**clean1**: Clean the contents of the sub directory 1 which is basic.o and basic.h from the respective sub-directories.
-     9.**clean2**: Clean the contents of the sub directory 1 which is basic.o and basic.h from the respective sub-directories.
-     10.**clean3**: Clean the contents of the sub directory 1 which is basic.o and basic.h from the respective sub-directories.
-     11.**clean4**: Clean the contents of the sub directory 1 which is basic.o and basic.h from the respective sub-directories.
+     
+     8.**clean1**: Clean the contents of the sub directory 1 which is basic.o and basic.h from the respective subdirectories.
+     
+     9.**clean2**: Clean the contents of the sub directory 1 which is basic.o and basic.h from the respective subdirectories.
+     
+     10.**clean3**: Clean the contents of the sub directory 1 which is basic.o and basic.h from the respective sub directories.
+    
+     11.**clean4**: Clean the contents of the sub directory 1 which is basic.o and basic.h from the respective sub directories.
+    
      12.**cleanall**: Clean the contents of all the subdirectories 1,2,3 and 4 i.e empty the header and obj directories.
 
 Upon testing, the changes made to different source are reflected when the make is used again. Thus, the design of the file system achieves its purpose. 
