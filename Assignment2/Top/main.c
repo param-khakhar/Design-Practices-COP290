@@ -26,6 +26,8 @@ int main() {
 	while(1){
 		printf("shell> ");
 
+	/* The input string parsing is done in the following lines. The different separators which are used 
+	   are \n,\a,\t and white space. The correspoding tokens are stored in tokens. */
 		char *buffer;
     		size_t bufsize = 32;
     		size_t characters;
@@ -41,6 +43,10 @@ int main() {
 		builtIns[3] = "mkdir";
 		builtIns[4] = "rmdir";
 		int i = -1;
+
+		/* Built-ins is used to detect the presence of any built-in commands such as cd, mkdir, rmdir pwd, and exit.
+		   The corresponding commands are identified and they are executed in the corresponding if-else block. The
+		   functions are present in the file builtins.c and they are imported. */
 
 		for(int j=0;j<5;j++){
 			if (strcmp(tokens[0], builtIns[j]) == 0) { 
@@ -66,11 +72,12 @@ int main() {
 		}
 		else if(i == 4){
 			for(int i=1;i<n;i++){
-				rmv(tokens[1]);
+				rmv(tokens[i]);
 			}
 		}
 		else{
-	//		Detecting the presence of any input,output and pipes in the input.
+	//		Detecting the presence of any input,output and pipes in the input. i.e detecting the symbols <, >, and |. The
+	//		variables pi, input and output are indicative of the symbols. Piped and unpiped commands are handled separately.
 			int pi = -1;
 			int input = -1;
 			int output = -1;
@@ -89,8 +96,7 @@ int main() {
 
 			if(pi == 1){
 				
-			
-			handle_piped(tokens, n, input,output);
+				handle_piped(tokens, n, input,output);
 	
 			}
 			else{
