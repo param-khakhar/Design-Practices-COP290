@@ -18,7 +18,16 @@ char* b;
 char Ten [1000] = "10";
 
 
-void aheadZero(char s []){
+char* aheadZero(char s []){
+	char zer [10] = "0";
+	char* w = zer;
+	if(strcmp(zer,s) == 0){
+		return w;
+	}
+	char mzer [10] = "-0";
+	if(strcmp(mzer,s) == 0){
+		return w;
+	}	
 	char t [1000] = "";
 	bool trail1 = false;
 	char s1[1000] = "";
@@ -44,20 +53,22 @@ void aheadZero(char s []){
 			strncat(t,&q,1);
 		}
 	}
-//	printf("Aheadt: %s\n",t);
 	if(s[0] == '-'){
 		reverse(t);
 		strncat(t,&dash,1);
 		reverse(t);
 	}
-	strcpy(s,t);
+	char* T = t;
+	return T;
 }
 
 char* removeTrail(char y []){
+	bool decimal = true;
 	char z [1000] = "";
 	bool trail = false;
-//	printf("Inside trail: %s\n",y);
 	for(int i = strlen(y) - 1;i>=0;i--){
+		if(y[i] == '.')
+			decimal = false;
 		if(y[i] == '.' && (!(trail))){
 			trail = true;
 			continue;
@@ -69,15 +80,18 @@ char* removeTrail(char y []){
 			char w = y[i];
 			strncat(z,&w,1);
 		}
-	//	printf("Inside trail: %s\n",z);
 	}
 	if(strlen(z) == 0){
 		strncat(z,&zero,1);
 	}
-//	printf("%s\n",z);
 	reverse(z);
-	strcpy(y,z);
-	return y;
+	if(decimal){
+		char* R1 = y;
+		return R1;
+	}
+	char* R = z;
+//	strcpy(y,R);
+	return R;
 //	printf("%s\n",z);
 //	aheadZero(z);
 }
@@ -168,7 +182,6 @@ char* setPrecision(char op1 []){
 	}
 	strcpy(op1,op7);
 	return op1;
-//	printf("%s\n",op7);
 }
 
 char* reverse(char str[]){
@@ -198,31 +211,46 @@ char* add(char op1[],char op2 []){
 }
 
 char* add_sub(char op1 [], char op2 [], char c []){
+	
 	dec(op1,op2);
-//	printf("Inside add");
 	if((op1[0] != '-' && op2[0] != '-')||(op1[0] == '-' && op2[0] == '-')){
 
 	//	Adding two positive or 2 negative numbers
-		
-		int s1 = strlen(op1);
-		int s2 = strlen(op2);
+		char op1m [1000] = "";
+		char op2m [1000] = "";
+		if(op1[0] == '-'){
+			substring(op1m,op1,1,strlen(op1)-1);
+			substring(op2m,op2,1,strlen(op2)-1);
 
-		if(s1>s2){
-			a = op1;
-			b = op2;
+			int s1 = strlen(op1m);
+			int s2 = strlen(op2m);
+
+			if(s1>s2){
+				a = op1m;
+				b = op2m;
+			}
+			else{
+				a = op2m;
+				b = op1m;
+			}
 		}
 		else{
-			a = op2;
-			b = op1;
+		
+			int s1 = strlen(op1);
+			int s2 = strlen(op2);
+
+			if(s1>s2){
+				a = op1;
+				b = op2;
+			}
+			else{
+				a = op2;
+				b = op1;
+			}
 		}
-	
 
 		reverse(a);
 		reverse(b);
-//		printf(a);
-//		printf("\n");
-//		printf(b);
-//		printf("\n");	
 		int car = 0;
 		int m = strlen(a);
 		int n = strlen(b);
@@ -276,13 +304,17 @@ char* add_sub(char op1 [], char op2 [], char c []){
 		if(car == 1){
 			strncat(c,&one,1);
 		}
-//	printf(c);
-//	printf("\n");
-//	printf(reverse(c));
-//	printf("\n");
-//	return reverse(c);
+		if(op1[0] == '-'){
+			strncat(c,&dash,1);
+		}
 	reverse(c);
-	return c;
+	char* c1 = aheadZero(c);
+	char c1A [1000] = "";
+	strcpy(c1A,c1);
+	char* c2 = removeTrail(c1A);
+	char c2A [1000] = "";
+	strcpy(c2A,c2);
+	return c2;
 	}
 	else{
 	//Code to add a positive and a negative number;
@@ -303,7 +335,6 @@ char* add_sub(char op1 [], char op2 [], char c []){
 		}
 		else{
 			substring(temp,op2,1,s2-1);
-	//		printf(temp);
 			res = compare(op1,temp);
 			if(res == 0){
 				subiter(op1,temp,c);
@@ -313,11 +344,16 @@ char* add_sub(char op1 [], char op2 [], char c []){
 				strncat(c,&dash,1);
 				}
 			}
-//		printf("%s\n",c1);
-		return reverse(c);
-		}
-//	printf(c);
-//	printf("\n");
+		
+		reverse(c);
+		char* c1 = aheadZero(c);
+		char c1A [1000] = "";
+		strcpy(c1A,c1);
+		char* c2 = removeTrail(c1A);
+		char c2A [1000] = "";
+		strcpy(c2A,c2);
+		return c2;
+	}
 }
 
 char* subiter(char op1 [], char op2 [], char c []){
@@ -335,10 +371,6 @@ char* subiter(char op1 [], char op2 [], char c []){
 	int n = strlen(b);
 	reverse(a);
 	reverse(b);
-//	printf(a);
-//	printf("\n");
-//	printf(b);
-//	printf("\n");
 	for(int i=0;i<m;i++){
 		if(a[i] == '.'){
 			strncat(c,&dot,1);
@@ -402,21 +434,27 @@ char* subiter(char op1 [], char op2 [], char c []){
 			strncat(r,&t,1);
 		}
 	}
-	//printf("R is:%s\n",r);
 	strcpy(c,r);
 	reverse(c);
 	return c;
 }
 
 int compare(char op1 [], char op2 []){
-	int s1 = strlen(op1);
-	int s2 = strlen(op2);
+//	int s1 = strlen(op1);
+//	int s2 = strlen(op2);
+//	printf("Op1: %s\n",op1);
+//	printf("Op2: %s\n",op2);
 	char o1 [1000];
 	char o2 [1000];
 	strcpy(o1,op1);
 	strcpy(o2,op2);
+	dec(o1,o2);
+//	printf("Op1: %s\n",o1);
+//	printf("Op2: %s\n",o2);
 	reverse(o1);
 	reverse(o2);
+	int s1 = strlen(o1);
+	int s2 = strlen(o2);
 	if(s1>s2){
 		while(strlen(o2)!=strlen(o1)){
 			strncat(o2,&zero,1);
@@ -429,6 +467,8 @@ int compare(char op1 [], char op2 []){
 	}
 	reverse(o1);
 	reverse(o2);
+//	printf("O1: %s\n",o1);
+//	printf("O2: %s\n",o2);
 	int i = 0;
 	int curr1 = 0;
 	int curr2 = 0;
@@ -449,16 +489,18 @@ int compare(char op1 [], char op2 []){
 	}
 }
 
-char* sub(char op1 [], char op2 []){
+char* sub(char op1 [], char op2 [],int status){
 	
 	if(op2[0] == '-'){
-		char temp [1000];
-		char temp2 [1000];
+		char temp [1000] = "";
+		char temp2 [1000] = "";
 		int s2 = strlen(op2);
 		substring(temp,op2,1,s2-1);
 		add_sub(op1,temp,temp2);
-		printf("%s\n",temp2);
-		return temp2;
+		if(status == 0)
+			printf("%s\n",temp2);
+		char* temp4 = temp2;
+		return temp4;
 	}
 	else{
 		char* temp;
@@ -466,9 +508,13 @@ char* sub(char op1 [], char op2 []){
 		strncat(op2,&dash,1);
 		reverse(op2);
 		char temp2 [1000] = "";
+//		printf("Op1: %s\n",op1);
+//		printf("Op2: %s\n",op2);
 		add_sub(op1,op2,temp2);
-		printf("%s\n",temp2);
-		return temp2;
+		if(status == 0)
+			printf("%s\n",temp2);
+		temp = temp2;
+		return temp;
 	}
 }
 
@@ -477,13 +523,16 @@ char* mul(char op1 [], char op2 [],int status){
 
 	char* res;
 	int i = dec(op1,op2);
-	char temp [1000];
+//	printf("Op1: %s\n",op1);
+//	printf("Op2: %s\n",op2);
+	char temp [10000] = "";
 	int s1 = strlen(op1);
 	int s2 = strlen(op2);
-	char sum [1000] = "0";
+	char sum [10000] = "0";
 
 	if((op1[0] != '-') && (op2[0] != '-')){
 		res = multiter(op1,op2,sum,i);
+	//	printf("res: %s\n",res);
 	}
 	else if((op1[0] == '-') && (op2[0] != '-')){
 		substring(temp,op1,1,s1-1);
@@ -500,20 +549,34 @@ char* mul(char op1 [], char op2 [],int status){
 		reverse(res);
 	}
 	else{
-		char temp1 [1000];
-		char temp2 [1000];
+		char temp1 [10000] = "";
+		char temp2 [10000] = "";
 		substring(temp1,op1,1,s1-1);
 		substring(temp2,op2,1,s2-1);
 		res = multiter(temp1,temp2,sum,i);
 	}
+	//printf("Res: %s\n",res);
+
+	char resA [1000] = "";
+	strcpy(resA,res);
+	char* r1 = aheadZero(resA);
+	char r1A [1000] = "";
+	strcpy(r1A,r1);
+//	printf("%s\n",r1A);
+	char* r2 = removeTrail(r1A);
+	char r2A [1000] = "";
+	strcpy(r2A,r2);
 	if(status == 0){
-		printf("%s\n",res);
+		printf("%s\n",r2A);
 	}
-	return res;	
+	return r2;	
 }
 
 char* multiter(char op1 [], char op2 [], char sum [], int dec){
-
+	
+//	printf("Op1 iter: %s\n",op1);
+//	printf("Op2 iter: %s\n",op2);
+	
 	int s1 = strlen(op1);
 	int s2 = strlen(op2);
 	char* a1;
@@ -530,7 +593,7 @@ char* multiter(char op1 [], char op2 [], char sum [], int dec){
 	int rem = 0;
 	int curr1 = 0;
 	int curr2 = 0;
-	int res;
+	int res = 0;
 	int m = strlen(a1);
 	int n = strlen(b1);
 	int carry = 0;
@@ -538,7 +601,7 @@ char* multiter(char op1 [], char op2 [], char sum [], int dec){
 	int quo;
 	char* sumt;
 	for(int i=0;i<n;i++){
-		char result [1000] = "";
+		char result [10000] = "";
 		if(b1[n-i-1] != '.'){
 			times++;
 			for(int j=0;j<m;j++){
@@ -566,61 +629,93 @@ char* multiter(char op1 [], char op2 [], char sum [], int dec){
 				reverse(result);
 				strncat(result,&temp,1);
 				reverse(result);
+				carry = 0;
 			}
 			for(int z = 0;z<times;z++){
 				strncat(result,&zero,1);
-		
 			}
-			char y [1000] = "";
+		//	printf("result: %s\n",result);
+			char y [10000] = "";
 			sumt = add_sub(sum,result,y);
 			strcpy(sum,sumt);
+		//	printf("Sum: %s\n");
 		}
 	}
-	if(dec>0){
-		char resultf [1000] = "";
-		reverse(sum);
-		int s3 = strlen(sum);
-		for(int i = 0;i< s3;i++){
-			if(i == 2*dec){
-				strncat(resultf,&dot,1);
+//	printf("Sum: %s\n",sum);
+	char sumA [1000] = "";
+	if(strlen(sum) > 2*dec){
+		for(int j = 0;j<strlen(sum);j++){
+			if(j == strlen(sum) - 2*dec){
+			       strncat(sumA,&dot,1);
 			}
-			char t = sum[i];
-			strncat(resultf,&t,1);
+			strncat(sumA,&sum[j],1);	
 		}
-	reverse(resultf);
-	strcpy(sum,resultf);
 	}
-	return sum;
+	else if(strlen(sum) == 2*dec){
+		strncat(sumA,&zero,1);
+		strncat(sumA,&dot,1);
+		strcat(sumA,sum);
+	//	reverse(sum);
+	//	strncat(sum,&dot,1);
+	//	strncat(sum,&zero,1);
+	//	reverse(sum);
+	}
+	else{
+		strncat(sumA,&zero,1);
+		strncat(sumA,&dot,1);
+		int j = 2*dec - strlen(sum);
+		while(j>0){
+			strncat(sumA,&zero,1);
+			j--;
+		}
+		strcat(sumA,sum);
+	}
+	char* sumAF = removeTrail(sumA);
+	return sumAF;
 }
 
-void abs(char a []){
+char* abs(char a [], int status){
+	char* R;
 	if(a[0] != '-'){
-		printf("%s\n",a);
+		if(status == 0)
+			printf("%s\n",a);
+		R = a;
 	}
 	else{
 		int s1 = strlen(a);
 		char temp[1000] = "";
 		substring(temp,a,1,s1-1);
-		printf("%s\n",temp);
+		if(status == 0)
+			printf("%s\n",temp);
+		R = temp;
 	}
+	return R;
 }
 
 
-char* div(char op1 [], char op2 []){
+char* div(char op1 [], char op2 [], int precision, int status){
 
-//	printf("Op1 just inside divide: %s\n",op1);	
-//	printf("Op2 just inside divide: %s\n",op2);
-	if(strcmp(op2,"0") == 0){
+
+	char O [10] = "0";
+	//printf("Op1 just inside divide: %s\n",op1);	
+	//printf("Op2 just inside divide: %s\n",op2);
+	if(strcmp(op2,O) == 0){
 		printf("Sorry. Out of the computational capabilities of this calculator\n");
 		return;
 	}
+	if(strcmp(op1,O) == 0){
+		if(status == 0)
+			printf("%s\n",O);
+		char* sO = O;	
+		return sO;
+	}
 	int index1 = 0;
 	int index2 = 0;
-	char res [1000] = "";
-	char result [1000] = "";
-	char a2 [1000] = "";
-	char b2 [1000] = "";
-	char temp [1000] = "";
+	char res [10000] = "";
+	char result [10000] = "";
+	char a2 [10000] = "";
+	char b2 [10000] = "";
+	char temp [10000] = "";
 
 	for(int j=0;j<strlen(op1);j++){
 		char x = op1[j];
@@ -640,8 +735,8 @@ char* div(char op1 [], char op2 []){
 		strncat(b2,&w,1);
 	}
 
-	char a3[1000] = "";
-	char b3[1000] = "";
+	char a3[10000] = "";
+	char b3[10000] = "";
 	bool lead1 = false;
 	bool lead2 = false;
 
@@ -699,19 +794,19 @@ char* div(char op1 [], char op2 []){
 		reverse(res);
 	}
 	else{
-		char temp1 [1000];
-		char temp2 [1000];
+		char temp1 [10000];
+		char temp2 [10000];
 		substring(temp1,a3,1,s1-1);
 		substring(temp2,b3,1,s2-1);
 		diviter(temp1,temp2,res);
 	}
 	
-//	printf("%Inside div: %s\n",res);
+	//printf("Inside div: %s\n",res);
 	char* R;
-	char factor [1000] = "1";
+	char factor [10000] = "1";
 	int index4 = index1-index2;
-//	printf("index1: %d\n",index1);
-//	printf("Index2: %d\n",index2);
+	//printf("index1: %d\n",index1);
+	//printf("Index2: %d\n",index2);
 	if(index4 < 0){
 		while(index4<0){
 			index4++;
@@ -731,22 +826,32 @@ char* div(char op1 [], char op2 []){
 		reverse(factor);
 	//	printf("factor: %s\n",factor);
 	//	printf("res: %s\n",res);
-	//	multiter(factor,res,result,0);
+		multiter(factor,res,result,0);
 		R = mul(factor,res,1);
 		strcpy(result,R);
 	//	printf("res: %s\n",res);
-	//		printf("result: %s\n",result);
+		//printf("result: %s\n",result);
 	}
 	else{
 		strcpy(result,res);
 	}
-	char zero [1000];
+	char zero [10000];
 	strcpy(zero,result);
-	aheadZero(zero);
-	removeTrail(zero);
-	setPrecision(zero);
-	printf("%s\n",zero);
-	return zero;
+	//printf("Zero: %s\n",zero);
+	char* z1 = aheadZero(zero);
+	char z1A [10000] = "";
+	strcpy(z1A,z1);
+//	printf("z1A: %s\n",z1A);
+	char* z = removeTrail(z1A);
+	char zA [10000];
+	strcpy(zA,z);
+//	printf("%s\n",zA);
+	if(precision == 0)
+		setPrecision(zA);
+	if(status == 0)
+		printf("%s\n",zA);
+	char* zF = zA;
+	return zF;
 }
 
 char* diviter(char dividend [], char divisor [], char quotient []){
@@ -758,9 +863,9 @@ char* diviter(char dividend [], char divisor [], char quotient []){
 	int digitsl = 0;
 	bool initial = true;
 	bool decimal = true;
-	char tempDvd [1000] = "";
-	char tempDvr1 [1000] = "";
-	char tempDvd1 [1000] = "";
+	char tempDvd [10000] = "";
+	char tempDvr1 [10000] = "";
+	char tempDvd1 [10000] = "";
 
 	int iter = 0;
 	int control = compare("0",dividend);
@@ -773,7 +878,8 @@ char* diviter(char dividend [], char divisor [], char quotient []){
 		//	printf("tempDvr before comparison outside loop case1: %s\n",tempDvr);
 		//	printf("dividend before comparison outside loop case1: %s\n",dividend);
 			res = compare(dividend,tempDvr);
-		//	printf("res just outside the loop: %d\n",res);
+//			printf("res just outside the loop: %d\n",res);
+//			break;
 			while(res==0){
 				strcpy(divisor,tempDvr);
 				digitsr++;
@@ -784,12 +890,13 @@ char* diviter(char dividend [], char divisor [], char quotient []){
 		//		printf("tempDvr case1 first loop: %s\n",tempDvr);
 				res = compare(dividend,tempDvr);
 			}
+		//	break;
 		//	printf("Divisor just after the loop: %s\n",divisor);
 			int quod = 0;	
 			res = compare(dividend,divisor);
 			while(res == 0){
 				quod++;
-				char tempDvd2 [1000] = "";
+				char tempDvd2 [10000] = "";
 				subiter(dividend,divisor,tempDvd2);
 				reverse(tempDvd2);
 				res = compare(tempDvd2,divisor);
@@ -797,7 +904,7 @@ char* diviter(char dividend [], char divisor [], char quotient []){
 			}
 			char tempc = quod + '0';
 			strncat(quotient,&tempc,1);
-		//	printf("Quotient case1: %s\n",quotient);
+	//		printf("Quotient case1: %s\n",quotient);
 			
 		}
 
@@ -815,7 +922,7 @@ char* diviter(char dividend [], char divisor [], char quotient []){
 			
 		//	printf("Dividend before the loop case2: %s\n",dividend);
 		//	printf("Divisor before the loop case2; %s\n",divisor);
-			char tempDvd3 [1000] = "";
+			char tempDvd3 [10000] = "";
 			multiter(dividend,Ten,tempDvd3,0);
 			res = compare(divisor,tempDvd3);
 			int i = 0;
@@ -826,7 +933,7 @@ char* diviter(char dividend [], char divisor [], char quotient []){
 				i++;
 			//	digitsl++;
 				strcpy(dividend,tempDvd3);
-				char tempDvd4 [1000] = "";
+				char tempDvd4 [10000] = "";
 				multiter(dividend,Ten,tempDvd4,0);
 				res = compare(divisor,tempDvd4);
 				strcpy(tempDvd3,tempDvd4);
@@ -845,9 +952,10 @@ char* diviter(char dividend [], char divisor [], char quotient []){
 		}
 		control = compare("0",dividend);
 	}
-	
+//	printf("Quotient before tangled: %s\n",quotient);
+
 	char* quo = "";
-	char factor [1000] = "1";
+	char factor [10000] = "1";
 	int i = digitsr-digitsl;
 //	printf("Index diviter: %d\n",i);
 	if(i>=0){
@@ -865,6 +973,8 @@ char* diviter(char dividend [], char divisor [], char quotient []){
 		strncat(factor,&zero,1);
 		reverse(factor);
 	}
+
+
 //	printf("FactorDiviter: %s\n",factor);
 //	printf("quotient before factor: %s\n",quotient);
 	quo = mul(quotient,factor,1);
@@ -873,13 +983,86 @@ char* diviter(char dividend [], char divisor [], char quotient []){
 	return quotient;
 }
 
+char* Sqrt(char op1 []){
+	int l = strlen(op1);
+	char x [100] = "1";
+	int dec = 0;
+	for(int j = 0;j < l;j++){
+		if(op1[j] == '.')
+			break;
+		dec++;
+	}
+	int append = dec/2;
+	if(append == 0){
+		dec = 0;
+		for(int i = 2;i<l;i++){
+			if(op1[i] != '0')
+				break;
+			dec++;
+		}
+		append = dec/2;
+		if(append == 0)
+			append = 1;
+	}
+	while(append > 0){
+		append--;
+		strncat(x,&zero,1);
+	}
+	//printf("Op1: %s\n",op1);
+	//printf("Seed: %s\n",x);
+	int i = 0;
+	while(true){
+		i++;
+		if(i == 70){
+			char* r = setPrecision(x);
+			printf("%s\n",x);
+			printf("%d\n",i);
+			return r;  
+			break;
+		}
+		printf("X2: %s\n",x);
+		char* temp = div(op1,x,0,1);
+		char tempA [1000] = "";
+		strcpy(tempA,temp);
+		printf("tempA: %s\n",tempA);
+		char result [10000] = "";
+		add_sub(x,tempA,result);
+		printf("Result: %s\n",result);
+		char half [1000] = "0.5";
+		char* Fresult = mul(half,result,1);
+		strcpy(x,Fresult);
+		printf("Xbefore: %s\n",x);
+		char* x1 = aheadZero(x);
+		char x1A [1000] = "";
+		strcpy(x1A,x1);
+		char* x2 = removeTrail(x1A);
+		strcpy(x,x2);
+	}
+}
+
+//(-0.02) + (-1234)
+//
+
+//Adding statuses to mult div.
+//Changes made to multiter.
+// Format multiplication reduce by decimal places.
+// Change s1 and s2 lengths in compare.
+// Add dec in compare
+//Compare 0.14 and 0.000001
+//Compare 2.56000000 and 0.0000001
+//Modify sub as well for removeTail and aheadZero.
+//Modify removeTail for nondecimal values. Zeros not to be removed in that case.
+//aheadZero and removeTrail in mul
+//Modifying arguments in removeTrail and hence changes in Division as well as aheadZero.
+//Modifying add_sub by adding removeTail and aheaZero on the arguments. Need to make changes in the sub() as well and other places where add_sub was used.
+
 int main(){
 	char s [1000] = "12345678908765434567765456789098765456789098726523512379812351278351825387126781296129678327018273817293618531785478361498673197849823719";
 	char t [1000] = "1625367127512635267125367125671527512635126531672567125671256125376571";
-	printf("%s","Div:");
-	char g [1000] = "10";
-	char h [1000] = "0";
-	div(g,h);
+//	printf("%s","Div:");
+	char g [1000] = "0";
+	char h [1000] = "10";
+//	div(g,h);
 	char a [10000] = "12345678908765434567765456789098765456789098726523512379812351278351825387126781296129678327018273817293618531785478361498673197849823719";
 	char b [10000] = "1625367127512635267125367125671527512635126531672567125671256125376571";
 	char c [1000] = "12345678908765434567765456789098765456789098726523512379812351278351825387126781296129678327018273817293618531785478361498673197849823719";
@@ -887,12 +1070,26 @@ int main(){
 	char e [1000] = "12345678908765434567765456789098765456789098726523512379812351278351825387126781296129678327018273817293618531785478361498673197849823719";
 	char f [1000] = "1625367127512635267125367125671527512635126531672567125671256125376571";
 
+//	mul(g,h,0);
 	//printf("%s","Add:");
-	//add(a,b);
+//	sub(g,h,0);
 	//printf("%s","Sub:");
-	//sub(c,d);
-	//printf("%s","Mul:");
-	//mul(e,f);
+//	sub(s,t,0);
+//	printf("%s","SQRT:");
+//	char i [1000] = "0.000000000001417301038062283736846366782006920415225";
+//	char j [1000] = "0.00000001";
+//	int res = compare(i,j);
+//	printf("%d\n",res);
+	div(g,h,0,0);
+	Sqrt(g);
+//	char* R = abs("1",0);
+//	char R1 [1000];
+//	strcpy(R1,R);
+//	printf("R1: %s\n",R1);
+//	char* P = removeTrail(i);
+//	char PA [1000] = "";
+//	strcpy(PA,P);
+//	printf("%s\n",PA);
 	return 0;
 }
 

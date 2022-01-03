@@ -1,0 +1,12 @@
+#include <stdio.h>
+
+int main(){
+        int a = 3;
+        int b = 5;
+        int c = a+b;
+        char d [100] = " NES: P NES: a NES: r NES: a NES: m NES:   BS: \' NES:   NES: h NES: a NES: / NES: * NES: k NES: h NES: *„(­û NL: 
+ NES:   NES:   NES:   NES:   NES:   NES:   NES:   NES:   NES:   NES:   NES:   NES:   NES:   NES:   NES:   NES:   NES: / NES: a NES: r ES: ";
+        return 0;
+}       
+
+Final: 11

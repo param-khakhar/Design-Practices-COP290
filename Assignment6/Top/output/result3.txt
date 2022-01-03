@@ -1,0 +1,17 @@
+Number of Tellers: 10
+Type of Queueing: Multiple Queues
+Total number of customers served: 100
+Average time spent by a customer in the bank: 4.852512   SD: 3.069981
+Maximum waiting time: 7.364624
+Total teller service time: 645.382874
+Total teller idle time: 209.000000
+
+
+Number of Tellers: 10
+Type of Queueing: Single Queue
+Total number of customers served: 100
+Average time spent by a customer in the bank: 4.209102   SD: 2.995858
+Maximum waiting time: 4.101505
+Total teller service time: 592.610046
+Total teller idle time: 137.000000
+

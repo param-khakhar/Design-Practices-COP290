@@ -1,0 +1,144 @@
+Grammar
+
+    0 $accept: lines $end
+
+    1 lines: %empty
+    2      | lines expr NEWLINE
+
+    3 expr: expr OPR1 expr
+    4     | expr OPR2 expr
+    5     | IDENTIFIER
+    6     | INTEGER
+    7     | EXIT
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+INTEGER (258) 6
+IDENTIFIER (259) 5
+OPR1 (260) 3
+OPR2 (261) 4
+NEWLINE (262) 2
+EXIT (263) 7
+
+
+Nonterminals, with rules where they appear
+
+$accept (9)
+    on left: 0
+lines (10)
+    on left: 1 2, on right: 0 2
+expr (11)
+    on left: 3 4 5 6 7, on right: 2 3 4
+
+
+State 0
+
+    0 $accept: . lines $end
+
+    $default  reduce using rule 1 (lines)
+
+    lines  go to state 1
+
+
+State 1
+
+    0 $accept: lines . $end
+    2 lines: lines . expr NEWLINE
+
+    $end        shift, and go to state 2
+    INTEGER     shift, and go to state 3
+    IDENTIFIER  shift, and go to state 4
+    EXIT        shift, and go to state 5
+
+    expr  go to state 6
+
+
+State 2
+
+    0 $accept: lines $end .
+
+    $default  accept
+
+
+State 3
+
+    6 expr: INTEGER .
+
+    $default  reduce using rule 6 (expr)
+
+
+State 4
+
+    5 expr: IDENTIFIER .
+
+    $default  reduce using rule 5 (expr)
+
+
+State 5
+
+    7 expr: EXIT .
+
+    $default  reduce using rule 7 (expr)
+
+
+State 6
+
+    2 lines: lines expr . NEWLINE
+    3 expr: expr . OPR1 expr
+    4     | expr . OPR2 expr
+
+    OPR1     shift, and go to state 7
+    OPR2     shift, and go to state 8
+    NEWLINE  shift, and go to state 9
+
+
+State 7
+
+    3 expr: expr OPR1 . expr
+
+    INTEGER     shift, and go to state 3
+    IDENTIFIER  shift, and go to state 4
+    EXIT        shift, and go to state 5
+
+    expr  go to state 10
+
+
+State 8
+
+    4 expr: expr OPR2 . expr
+
+    INTEGER     shift, and go to state 3
+    IDENTIFIER  shift, and go to state 4
+    EXIT        shift, and go to state 5
+
+    expr  go to state 11
+
+
+State 9
+
+    2 lines: lines expr NEWLINE .
+
+    $default  reduce using rule 2 (lines)
+
+
+State 10
+
+    3 expr: expr . OPR1 expr
+    3     | expr OPR1 expr .
+    4     | expr . OPR2 expr
+
+    OPR2  shift, and go to state 8
+
+    $default  reduce using rule 3 (expr)
+
+
+State 11
+
+    3 expr: expr . OPR1 expr
+    4     | expr . OPR2 expr
+    4     | expr OPR2 expr .
+
+    $default  reduce using rule 4 (expr)

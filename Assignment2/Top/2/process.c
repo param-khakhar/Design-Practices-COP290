@@ -43,6 +43,7 @@ void handle_unpiped(char** tokens,int input,int output){
 			int in,out;
 			if(input!=-1){
 				in = open(tokens[input], O_RDONLY);
+				/*Duplicating in to 0*/
 				dup2(in,0);
 				close(in);
 			}
@@ -69,7 +70,7 @@ void handle_unpiped(char** tokens,int input,int output){
 
 int command(int input, int output, int cmd, int fd, int first, int last, char** tokens){
 
-	/* This is called as a supplementary function for the case when pipelining is invoved. It executes a particular file
+	/* This is called as a supplementary function for the case when pipelining is involved. It executes a particular file
 	   and stores the input and output in the array pipeline with the help of function dup2(). There are three cases 
 
 	   	1. The command is the first command, has to read input from the file.
@@ -140,7 +141,7 @@ int handle_piped(char ** array, int n, int input, int output){
 		if(strcmp(array[i], "|") == 0){
 			res = command(input,output,cmd,res,first,last,array);
 			cmd = i+1;
-		first = 0;
+			first = 0;
 		}
 	}
 	last = 1;
